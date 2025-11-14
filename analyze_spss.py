@@ -255,6 +255,9 @@ def main() -> None:
         print("-" * 100)
         for col in df.columns:
             label = column_labels_dict.get(col, '<no label>')
+            # Handle None labels
+            if label is None:
+                label = '<no label>'
             col_quality = next((c for c in quality_metrics['column_quality'] if c['name'] == col), {})
             print(
                 f"{col:<30} {label[:40]:<40} {str(df[col].dtype):<10} "
