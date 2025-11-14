@@ -167,9 +167,16 @@ def main() -> None:
         )
         sys.exit(1)
 
+    if not dataset_path.is_file():
+        print(
+            f"Error: The path '{dataset_path}' is not a file. "
+            "Please provide a path to an SPSS .sav file, not a directory."
+        )
+        sys.exit(1)
+
     try:
         df, meta = pyreadstat.read_sav(dataset_path)
-    except (pyreadstat.PyreadstatError, OSError) as exc:
+    except (pyreadstat.ReadstatError, OSError) as exc:
         print("Failed to load dataset:", exc)
         sys.exit(1)
 
