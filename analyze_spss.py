@@ -180,6 +180,11 @@ def main() -> None:
         print("Failed to load dataset:", exc)
         sys.exit(1)
 
+    # Create column labels dictionary (column_labels is a list, not a dict)
+    column_labels_dict = {}
+    if hasattr(meta, 'column_names') and hasattr(meta, 'column_labels'):
+        column_labels_dict = dict(zip(meta.column_names, meta.column_labels))
+
     # Filter columns if specified
     if args.columns:
         available_cols = df.columns.tolist()
@@ -249,7 +254,7 @@ def main() -> None:
         print(f"{'Variable':<30} {'Label':<40} {'Type':<10} {'Missing %':<10} {'Unique':<10}")
         print("-" * 100)
         for col in df.columns:
-            label = meta.column_labels.get(col, '<no label>')
+            label = column_labels_dict.get(col, '<no label>')
             col_quality = next((c for c in quality_metrics['column_quality'] if c['name'] == col), {})
             print(
                 f"{col:<30} {label[:40]:<40} {str(df[col].dtype):<10} "
