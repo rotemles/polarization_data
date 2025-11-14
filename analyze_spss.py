@@ -204,9 +204,9 @@ def main() -> None:
             "file_label": meta.file_label,
             "number_columns": meta.number_columns,
             "number_rows": meta.number_rows,
-            "creation_time": str(meta.creation_time) if meta.creation_time else None,
-            "modified_time": str(meta.modified_time) if meta.modified_time else None,
-            "author": meta.author,
+            "creation_time": str(meta.creation_time) if getattr(meta, 'creation_time', None) else None,
+            "modified_time": str(getattr(meta, 'modified_time', None)) if getattr(meta, 'modified_time', None) else None,
+            "author": getattr(meta, 'author', None),
         },
         "data_quality": quality_metrics,
         "variable_types": var_types,
@@ -218,12 +218,15 @@ def main() -> None:
         print(f"File label:         {meta.file_label or '<none>'}")
         print(f"Number of variables: {meta.number_columns}")
         print(f"Number of cases:     {meta.number_rows}")
-        if meta.creation_time:
-            print(f"Created:             {meta.creation_time}")
-        if meta.modified_time:
-            print(f"Modified:            {meta.modified_time}")
-        if meta.author:
-            print(f"Author:              {meta.author}")
+        creation_time = getattr(meta, 'creation_time', None)
+        if creation_time:
+            print(f"Created:             {creation_time}")
+        modified_time = getattr(meta, 'modified_time', None)
+        if modified_time:
+            print(f"Modified:            {modified_time}")
+        author = getattr(meta, 'author', None)
+        if author:
+            print(f"Author:              {author}")
 
     # === Data Quality Overview ===
     print_section("DATA QUALITY OVERVIEW")
